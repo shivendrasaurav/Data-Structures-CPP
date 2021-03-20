@@ -3,76 +3,91 @@
 #include<stdlib.h>
 using namespace std;
 
-struct node{
+struct LinkedList{
 	int data;
-	struct node *next;
+	struct LinkedList *next;
 };
 
-typedef struct node SLL;
-SLL *start=NULL, *sll, *rel;
+typedef struct LinkedList *node;
 
-void insert(){
-	int dat;
-	cout<<"\nEnter data for Node: ";
-	cin>>dat;
-	sll->data=dat;
-	if(start==NULL){					//If start==null then no element has been added to the linked list
-		sll->next = NULL;
-		start = sll;
-	}
-	else{								//If start!=null then atleast one element has been added to the linked list
-		sll->next = start;
-		start = sll;
-	}
+//Use this function to create new nodes for your LinkedList
+node createNode(){
+	node start;
+	start = (node)malloc(sizeof(node));
+	start->next = NULL;
+	return start;	
 }
 
-void remove(){
-	if(start==NULL){
-		cout<<"The list is empty";
+//Function to add new elements to your linked list
+node insertNewNode(node head, int val){
+	node temp, p;
+	temp = createNode();
+	temp->data = val;
+	
+	if(head==NULL){
+		head=temp;
 	}
 	else{
-		rel = start;
-		while(rel->next->next!=NULL)
-			rel=rel->next;
-		
-		sll=rel->next;
-		rel->next=NULL;
-		cout<<"\nElement at last position is deleted";
-		free(sll);		
-	}
-}
-
-void print(){
-	if(start==NULL){
-		cout<<"The list is empty";
-	}
-	else{
-		rel=start;
-		cout<<"\nElemets present in list: \n";
-		while(rel!=NULL){
-			cout<<" "<<rel->data;
-			rel=rel->next;
+		p = head;
+		while(p->next!=NULL){
+			p = p->next;
 		}
+		p->next = temp;
 	}
+	cout<<"\nNew node has been added to Linked List, Press any button to continue";
+	getch();
+	system("cls");
+	return head;
+}
+
+int removeLastNode(node head){
+	node p;
+	p = head;
+	while(p->next->next != NULL){	//Check if next of next element is NULL or not, if yes then next element has to be removed
+    	p = p->next;
+	}
+	p->next = NULL;					//If next of next is null, it means we are on 2nd last element now and we will set its next as NULL to remove last element from Linked List
+	cout<<"\nLast node of the Linked List has been removed, Press any button to continue";
+	getch();
+	system("cls");
+	return 0;
+}
+
+int printAllNodes(node head){
+	cout<<"\nThe nodes present in Linked List are: \n";
+	node p;
+	p = head;
+	while(p->next != NULL){		//Traverse till next element is NULL, i,e; last element
+    	p = p->next;
+		cout<<"->"<<p->data<<"  ";
+	}
+	cout<<"\nPress any button to continue";
+	getch();
+	system("cls");
+	return 0;
 }
 
 int main(){
 	int flag=0;
+	node start = createNode();
 	while(flag!=1){
 		cout<<"Select an action: \n1. Add a new Node \n2. Remove last Node \n3. Print \n4. Exit\n\n";
 		int ch;
 		cin>>ch;
-		switch(ch){
+		switch(ch){	
 			case 1: {
-				insert();
+				int val;
+				cout<<"\nEnter a number to add in Linked List: ";
+				cin>>val;
+				insertNewNode(start, val);
 				break;
 			}
 			case 2: {
-				remove();
+				flag = removeLastNode(start);
 				break;
 			}
 			case 3: {
-				print();
+				flag = printAllNodes(start);
 				break;
 			}
 			case 4: {
