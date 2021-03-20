@@ -6,7 +6,10 @@ using namespace std;
 struct node{
 	int data;
 	struct node *next;
-}*start=NULL, *sll, *rel;
+};
+
+typedef struct node SLL;
+SLL *start=NULL, *sll, *rel;
 
 void insert(){
 	int dat;
